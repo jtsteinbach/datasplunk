@@ -89,7 +89,7 @@ def get_all_files(directory):
 def main_menu():
     print(f"""
     DataSplunk            {VERSION}
-    https://umbra.one/datasplunk
+    https://jts.gg/datasplunk
     """)
     directory = input("[Scan] Directory > ").strip()
     if not directory:

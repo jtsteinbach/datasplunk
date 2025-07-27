@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-#   DataSplunk          v1.0.0
-#   License           MIT 2025
-#   Author   jts.gg/datasplunk
+# ──────────────────────────────
+#   DataSplunk           v1.0.0
+#   Author    jts.gg/datasplunk
+#   License   r2.jts.gg/license
+# ──────────────────────────────
 
 import os
 import re
@@ -9,8 +11,8 @@ import sys
 import mmap
 import concurrent.futures
 
+# ────── constants ──────
 VERSION = "v1.0.0"
-
 MAGIC_SIGNATURES = {
     b'\x7fELF': 'ELF (Linux)',
     b'MZ': 'PE/COFF (Windows)',
@@ -21,6 +23,7 @@ MAGIC_SIGNATURES = {
     b'\xca\xfe\xba\xbe': 'Java .class'
 }
 
+# ────── check for binary ──────
 def is_compiled_code(file_path):
     if not os.path.isfile(file_path):
         return False
@@ -42,6 +45,7 @@ def is_compiled_code(file_path):
 
     return False
 
+# ────── datamine strings from binary files ──────
 def extract_strings_from_binary(file_path, min_str_len=4):
     results = []
     try:
@@ -86,6 +90,7 @@ def get_all_files(directory):
             all_files.append(file_path)
     return all_files
 
+# ────── script handling ──────
 def main_menu():
     print(f"""
     DataSplunk            {VERSION}
@@ -130,7 +135,7 @@ def main():
         sys.stdout.write(bar)
         sys.stdout.flush()
 
-    # Process in parallel
+    # process in parallel
     with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
         future_to_file = {executor.submit(process_file, fp): fp for fp in file_paths}
         for future in concurrent.futures.as_completed(future_to_file):
@@ -158,5 +163,7 @@ def main():
     input("[Exit] Press ENTER to exit...")
     return
 
+
+# ────── entry point ──────
 if __name__ == "__main__":
     main()
